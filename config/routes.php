@@ -1,13 +1,12 @@
 <?php
 
 $PROJ_DIR = '/myproj';
+
+use App\Controllers\HomeController;
+use App\Controllers\MovieController;
 use App\Router\Route;
 
 return [
-    Route::get('home', function () {
-        require_once APP_PATH . '/viwes/pages/home.php';
-    }),
-    Route::get('movies', function () {
-        require_once APP_PATH . '/viwes/pages/movies.php';
-    }),
+    Route::get('home', [HomeController::class, 'index']),
+    Route::get('movies', [MovieController::class, 'index']),
 ];

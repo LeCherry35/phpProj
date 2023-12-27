@@ -32,7 +32,7 @@ class Route {
         return $this -> method;
     }
 
-    public function getAction():callable
+    public function getAction():array
     {
         return $this -> action;
     }

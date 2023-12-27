@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Request;
 use App\Router\Router;
 
 class App
@@ -9,13 +10,10 @@ class App
     public function run ():void
     {
         $router = new Router();
+        $request = Request::createFromGlobals();
 
-        $uri = $_SERVER['REQUEST_URI'];
-        $method = $_SERVER['REQUEST_METHOD'];
 
-        $uri = str_replace($this->HOME_FOLDER, '',$uri); // replace folder name added by xampp from uri
-
-        $router->dispatch($uri, $method);
+        $router->dispatch($request -> uri(), $request -> method());
     }
-    private $HOME_FOLDER = '/myProj/';
+    
 }
