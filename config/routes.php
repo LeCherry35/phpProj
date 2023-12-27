@@ -4,7 +4,7 @@ $PROJ_DIR = '/myproj';
 
 use App\Controllers\HomeController;
 use App\Controllers\MovieController;
-use App\Router\Route;
+use App\Kernel\Router\Route;
 
 return [
     Route::get('home', [HomeController::class, 'index']),
