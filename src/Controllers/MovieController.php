@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
+use App\Kernel\Http\Redirect;
 use App\Kernel\Validator\Validator;
 
 class MovieController extends Controller
@@ -24,6 +25,7 @@ class MovieController extends Controller
         ]);
         
         if(!$validation) {
+            $this->redirect('add');
             dd($this->request()->errors());
         }
 
