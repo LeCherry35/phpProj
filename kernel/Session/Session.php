@@ -14,9 +14,14 @@ class Session {
         $_SESSION[$key] = $value;
     }  
 
-    public function get (string $key) :mixed 
+    public function get (string $key, $default = null) :mixed 
     {
-        return $_SESSION[$key] ?? null;
+        return $_SESSION[$key] ?? $default;
+    }
+
+    public function has(string $key): bool
+    {
+        return isset($_SESSION[$key]);
     }
 
     public function getFlash (string $key) :mixed 
