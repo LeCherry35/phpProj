@@ -2,7 +2,8 @@
 
 namespace App\Kernel\Session;
 
-class Session {
+class Session implements SessionInterface
+{
 
     public function __construct()
     {
@@ -24,7 +25,7 @@ class Session {
         return isset($_SESSION[$key]);
     }
 
-    public function getFlash (string $key) :mixed 
+    public function getFlash (string $key, $default = null) :mixed 
     {
         $value = $this -> get($key);
         $this -> remove($key);
