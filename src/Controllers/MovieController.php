@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Kernel\Controller\Controller;
-use App\Kernel\Http\Redirect;
-use App\Kernel\Validator\Validator;
 
 class MovieController extends Controller
 {
@@ -30,6 +28,12 @@ class MovieController extends Controller
             }
             $this->redirect('add');
         }
-        echo ('valid AF');
+        
+        
+        $id = $this->db()->insert('movies', [
+            'name' => $this->request()->input('name'),
+        ]);
+
+        dd($id,"eeeeee");
     }
 }

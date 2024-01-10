@@ -17,8 +17,25 @@ class Database implements DatabaseInterface
 
     public function insert (string $table, array $data): int|false
     {
-        return false;
-    }
+        $fields = array_keys($data);
+
+        $colunms = implode(', ', $fields);
+        $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
+        
+        $sql = "INSERT INTO $table ($colunms) VALUES ($binds)";
+
+        $stmt = $this -> pdo -> prepare($sql);
+        
+        try {
+            $stmt -> execute($data);
+        } catch (\PDOException $e) {
+            // exit("Database insert failed: {$e -> getMessage()}");
+            return false;
+        }
+
+        return (int) $this -> pdo -> lastInsertId();
+
+    }   
 
     private function connect () :void
     {
@@ -30,6 +47,10 @@ class Database implements DatabaseInterface
         $password = $this -> config -> get('database.password');
         $charset = $this -> config -> get('database.charset');
 
-        $this -> pdo = new \PDO("$driver:host=$host;port=$port;dbname=$database;charset=$charset", $username, $password);
+        try {
+            $this -> pdo = new \PDO("$driver:host=$host;port=$port;dbname=$database;charset=$charset", $username, $password);
+        } catch (\PDOException $e) {
+            exit("Database connection failed: {$e -> getMessage()}");
+        }
     }
 }
