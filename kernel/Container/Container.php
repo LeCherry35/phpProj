@@ -52,12 +52,12 @@ class Container
         $this -> request = Request::createFromGlobals();
         $this -> validator = new Validator();
         $this -> request -> setValidator($this -> validator);
-        $this->redirect = new Redirect();
         $this -> session = new Session();
-        $this -> view = new View($this -> session);
         $this -> config = new Config();
+        $this-> redirect = new Redirect($this -> config);
         $this -> database = new Database($this -> config);
         $this -> auth = new Auth($this -> database, $this -> session, $this -> config);
+        $this -> view = new View($this -> session, $this -> auth);
         $this -> router = new Router(
             $this -> view, 
             $this -> request, 

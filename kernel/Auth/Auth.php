@@ -35,19 +35,33 @@ class Auth implements AuthInterface
         return true;
     }
 
-    public function user () :?array
+    public function user () :?User
     {
-        return $_SESSION['user'] ?? null;
+        // return $_SESSION['user'] ?? null;
+        if (!$this -> check()) {
+            return null;
+        }
+
+        $user = $this -> db -> first($this -> table(), ['id' => $this -> session -> get($this -> sessionField())]);
+        if($user) {
+            return new User(
+                $user['id'],
+                $user[$this -> username()],
+                $user[$this -> password()],
+            );
+        }
+        return null;
     }
 
     public function check () :bool
     {
-        return isset($_SESSION['user']);
+        // return isset($_SESSION['user']);
+        return $this ->session -> has($this -> sessionField());
     }
 
     public function logout () :void
     {
-        unset($_SESSION['user']);
+        $this -> session -> remove($this -> sessionField());
     }
 
     public function table () :string

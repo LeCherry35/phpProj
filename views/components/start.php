@@ -7,3 +7,4 @@
     <link rel="stylesheet" href="public/assets/css/app.css">
 </head>
 <body>
+<?php $view -> component('header') ?>

@@ -5,7 +5,7 @@ namespace App\Kernel\Auth;
 interface AuthInterface
 {
     public function attempt (string $email, string $password) :bool;
-    public function user () :?array;
+    public function user () :?User;
     public function check () :bool;
     public function logout () :void;
     public function table () :string;
