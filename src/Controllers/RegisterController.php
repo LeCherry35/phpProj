@@ -29,6 +29,11 @@ class RegisterController extends Controller
             'password' => password_hash($this -> request() -> input('password'), PASSWORD_DEFAULT)
         ]);
 
-        dd("YSER", $userId);
+        if(!$userId) {
+            $this->session()->set('error', 'Something went wrong');
+            $this->redirect('reg');
+        }
+
+        $this->redirect('login');
     }
 }
