@@ -16,7 +16,7 @@ class Redirect implements RedirectInterface
     public function to (string $path) :void 
     {
         $baseUrl = $this -> config -> get('app.baseUrl');
-        header("Location: " . $baseUrl . $path);
+        header("Location: " . $baseUrl .'/'. $path);
         // header("Location: $path");
         exit;
     }

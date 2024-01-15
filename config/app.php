@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'baseUrl' => 'http://localhost/myproj/' 
+    'baseUrl' => 'http://localhost/myproj' 
 ];
