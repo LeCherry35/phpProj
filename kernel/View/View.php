@@ -3,6 +3,7 @@
 namespace App\Kernel\View;
 
 use App\Kernel\Auth\AuthInterface;
+use App\Kernel\Config\ConfigInterface;
 use App\Kernel\Exceptions\ViewNotFoundException;
 use App\Kernel\Session\SessionInterface;
 
@@ -11,6 +12,7 @@ class View implements ViewInterface
     public function __construct(
         private SessionInterface $session,
         private AuthInterface $auth,
+        private ConfigInterface $config,
     )
     {
         

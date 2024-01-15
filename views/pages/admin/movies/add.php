@@ -2,10 +2,10 @@
 
 <h1>Add Movie page</h1>
 
-<form action="" method="post">    
+<form action="" method="post" enctype="multipart/form-data">    
     <div>
         <label for="name">Name</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name">
     </div>
     <div>
     <?php if($session->has('name')){ ?>
@@ -17,9 +17,11 @@
     <?php }?>
 
     </div>
+    <div>
+        <input type="file" name="image">
+    </div>
 
     <button >Add</button>
-    <!-- <?php dd($session);?> -->
 </form>
 
 <?php $view -> component('end')?>
