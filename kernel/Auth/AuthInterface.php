@@ -9,7 +9,8 @@ interface AuthInterface
     public function check () :bool;
     public function logout () :void;
     public function table () :string;
-    public function username () :string;
+    public function email () :string;
+    public function login () :string;
     public function password () :string;
     public function sessionField () :string;
 }

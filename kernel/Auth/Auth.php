@@ -5,8 +5,8 @@ namespace App\Kernel\Auth;
 use App\Kernel\Auth\AuthInterface;
 use App\Kernel\Config\ConfigInterface;
 use App\Kernel\Database\DatabaseInterface;
+use App\Kernel\Http\RedirectInterface;
 use App\Kernel\Session\SessionInterface;
-use PSpell\Config;
 
 class Auth implements AuthInterface
 {
@@ -15,19 +15,21 @@ class Auth implements AuthInterface
         private DatabaseInterface $db, 
         private SessionInterface $session,
         private ConfigInterface $config,
+        private RedirectInterface $redirect,
         )
     {
     }
     public function attempt (string $username, string $password) :bool
     {
-        $user = $this -> db -> first($this -> table(), [$this -> username() => $username]);
+        $user = $this -> db -> first($this -> table(), [$this -> email() => $username]);
 
         if(!$user) {
-            return false;
+            $this->session->set('error', 'No user found with this email');
+            $this->redirect->to('login');
         }
-
         if(!password_verify($password, $user[$this -> password()])) {
-            return false;
+            $this->session->set('error', 'Wrong password');
+            $this->redirect->to('login');
         }
 
         $this -> session -> set($this->sessionField(), $user['id']);
@@ -46,8 +48,10 @@ class Auth implements AuthInterface
         if($user) {
             return new User(
                 $user['id'],
-                $user[$this -> username()],
+                $user[$this -> email()],
+                $user[$this -> login()],
                 $user[$this -> password()],
+
             );
         }
         return null;
@@ -69,9 +73,14 @@ class Auth implements AuthInterface
         return $this -> config -> get('auth.table', 'users');
     }
 
-    public function username () :string
+    public function email () :string
     {
-        return $this -> config -> get('auth.username', 'email');
+        return $this -> config -> get('auth.email', 'email');
+    }
+
+    public function login () :string
+    {
+        return $this -> config -> get('auth.login', 'name');
     }
 
     public function password () :string

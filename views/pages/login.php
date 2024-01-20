@@ -3,16 +3,15 @@
 <h1>Login page</h1>
 
 <form action="" method="post">
-        <div>
-    <?php if($session->has('error')){ ?>
+    <div>
+        <?php if($session->has('error')){ ?>
         <p style="color: red;">
-            <?php echo $session-> has('error') ?> 
+            <?php echo($session->getFlash('error'));?> 
         </p>
-    <?php }?>
+        <?php }?>
 
     </div>
-    <div>
-        <label for="email">Login</label>
+        <label for="email">Email</label>
         <input type="text" name="email" id="email">
     </div>
 

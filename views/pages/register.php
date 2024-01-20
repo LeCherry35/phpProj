@@ -4,7 +4,18 @@
 
 <form action="reg" method="post">
     <div>
-        <label for="email">Login</label>
+        <label for="login">Login</label>
+        <input type="text" name="login" id="email">
+    </div>
+    <?php if($session->has('login')){ ?>
+        <ul>
+            <?php foreach($session->getFlash('login') as $error) { ?>
+                <li style="color: red;"><?= $error ?></li>
+            <?php } ?>  
+        </ul>
+    <?php }?>
+    <div>
+        <label for="email">Email</label>
         <input type="text" name="email" id="email">
     </div>
     <div>
