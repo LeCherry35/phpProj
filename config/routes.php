@@ -24,4 +24,6 @@ return [
     Route::get('/admin/categories/add', [CategoryController::class, 'add'], [AuthMiddleware::class]),
     Route::post('/admin/categories/add', [CategoryController::class, 'store']),
     Route::post('/admin/categories/delete', [CategoryController::class, 'delete']),
+    Route::get('/admin/categories/edit', [CategoryController::class, 'edit'], [AuthMiddleware::class]),
+    Route::post('/admin/categories/edit', [CategoryController::class, 'update']),
 ];

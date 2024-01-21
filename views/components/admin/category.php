@@ -1,11 +1,9 @@
 
 <div>
     <?php echo $category->name() ?>
-    <form action="admin/categories/edit" method="post">
-        <input type="hidden" name="id" value="<?php echo $category->id() ?>">
-
-        <button>Edit</button>
-    </form>
+    <div>
+        <button><a href="admin/categories/edit?id=<?php echo $category->id() ?>">Edit</a></button>
+    </div>
     <form action="admin/categories/delete" method="post">
         <input type="hidden" name="id" value="<?php echo $category->id() ?>">
         <button>Delete</button>
