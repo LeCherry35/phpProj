@@ -17,7 +17,7 @@ class View implements ViewInterface
     {
         
     }
-    public function page (string $name) :void
+    public function page (string $name, array $data = []) :void
     { 
         $viewPath = APP_PATH . "/views/pages/$name.php";
         
@@ -25,11 +25,11 @@ class View implements ViewInterface
             throw new ViewNotFoundException("View $name not found");
         }
         
-        extract($this -> defaultData());
+        extract(array_merge($this -> defaultData(), $data));
 
         include_once $viewPath;
     }
-    public function component (string $name) :void
+    public function component (string $name, array $data = []) :void
     {
 
         $componentPath = APP_PATH . "/views/components/$name.php";
@@ -40,9 +40,9 @@ class View implements ViewInterface
             // throw new ViewNotFoundException("Component $name not found");
         }
 
-        extract($this -> defaultData());
+        extract(array_merge($this -> defaultData(), $data));
 
-        include_once $componentPath;
+        include $componentPath;
     }
 
     private function defaultData () :array
