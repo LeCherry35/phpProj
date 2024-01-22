@@ -18,7 +18,20 @@
 
     </div>
     <div>
+    <label for="description">Description</label>
+    <textarea name="description"></textarea>
+    </div>
+    <div>
+        <label for="image">Image</label>
         <input type="file" name="image">
+    </div>
+    <div>
+        <label for="category">Category</label>
+        <select name="category">
+            <?php foreach($categories as $category) { ?>
+                <option value="<?php echo $category->id() ?>"><?php echo $category->name() ?></option>
+            <?php } ?>
+        </select>
     </div>
 
     <button >Add</button>
