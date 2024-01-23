@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+img {
+    height: 200px;
+    width: 200px;
+    object-fit: contain;
+}
+
 body {
     font-family: Arial, Helvetica, sans-serif;
+    padding: 30px;
+    background-color: rgb(155, 255, 168);
 }

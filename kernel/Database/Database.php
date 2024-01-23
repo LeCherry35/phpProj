@@ -23,13 +23,12 @@ class Database implements DatabaseInterface
         $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
         
         $sql = "INSERT INTO $table ($colunms) VALUES ($binds)";
-
+        
         $stmt = $this -> pdo -> prepare($sql);
         
         try {
             $stmt -> execute($data);
         } catch (\PDOException $e) {
-            // exit("Database insert failed: {$e -> getMessage()}");
             return false;
         }
 
@@ -54,6 +53,58 @@ class Database implements DatabaseInterface
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         return $result ?: null;
+    }
+    
+    public function get(string $table, array $conditions = []) :array
+    {
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE '.implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "SELECT * FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($conditions);
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result ?: [];
+    }
+
+    public function delete(string $table, array $conditions = []) :void
+    {
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE '.implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "DELETE FROM $table $where";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($conditions);
+    }
+
+    public function update(string $table, array $data = [], array $conditions = []) :void
+    {
+        $fields = array_keys($data);
+
+        $colunms = implode(', ', array_map(fn($field) => "$field = :$field", $fields));
+
+        $where = '';
+
+        if (count($conditions) > 0) {
+            $where = 'WHERE '.implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
+        }
+
+        $sql = "UPDATE $table SET $colunms $where";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute(array_merge($data, $conditions));
     }
 
     private function connect () :void

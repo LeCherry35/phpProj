@@ -48,6 +48,13 @@ class MovieController extends Controller
         $this->redirect('admin/movies/add');
 
     }
+
+    public function delete () :void 
+    {
+        $id = $this->request()->input('id');
+        $this->service()->delete($id);
+        $this->redirect('admin');
+    }
     private function service() 
     {
         if(!isset($this->service)) {
@@ -55,4 +62,5 @@ class MovieController extends Controller
         }
         return $this->service;
     }
+
 }
