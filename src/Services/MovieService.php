@@ -42,8 +42,42 @@ class MovieService
             );
         }, $movies);
     }
+
+    public function getMovie(int $id) :Movie
+    {
+        $movie = $this->db->first('movies', ['id' => $id]);
+
+        if(!$movie) {
+            return null;
+        }
+
+        return new Movie(
+            $movie['id'],
+            $movie['name'],
+            $movie['description'],
+            $movie['category_id'],
+            $movie['image'],
+            $movie['created_at'],
+            $movie['updated_at'],
+        );
+    }
     public function delete(int $id) :void
     {
         $this->db->delete('movies', ['id'=>$id]);
+    }
+
+    public function update(string $name, string $description, int $category_id, ?UploadedFileInterface $file ,int $id) :void
+    {
+        $data = [
+            'name' => $name,
+            'description' => $description,
+            'category_id' => $category_id,
+        ];
+
+        if ($file && !$file->hasErrors()) {
+            $data['image'] = $file->move('movies');
+        }
+
+        $this->db->update('movies', $data, ['id'=>$id]);
     }
 }
