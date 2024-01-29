@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Kernel\Auth\User;
 use App\Kernel\Database\DatabaseInterface;
 use App\Kernel\Upload\UploadedFileInterface;
 use App\Models\Movie;
+use App\Models\Review;
 
 class MovieService 
 {
@@ -51,6 +53,8 @@ class MovieService
             return null;
         }
 
+        $reviews = $this->getReviews($id);
+
         return new Movie(
             $movie['id'],
             $movie['name'],
@@ -59,8 +63,10 @@ class MovieService
             $movie['image'],
             $movie['created_at'],
             $movie['updated_at'],
+            $reviews,
         );
     }
+
     public function delete(int $id) :void
     {
         $this->db->delete('movies', ['id'=>$id]);
@@ -79,5 +85,42 @@ class MovieService
         }
 
         $this->db->update('movies', $data, ['id'=>$id]);
+    }
+
+    public function getFreshMovies() :array
+    {
+        $movies = $this->db->get('movies', [], ['id' => 'DESC'], 4);
+
+        return array_map(function ($movie) {
+            return new Movie(
+                $movie['id'],
+                $movie['name'],
+                $movie['description'],
+                $movie['category_id'],
+                $movie['image'],
+                $movie['created_at'],
+                $movie['updated_at'],
+            );
+        }, $movies);
+    }
+
+    private function getReviews(int $id)
+    {
+        return array_map(function ($review) {
+            $user = $this->db->first('users', ['id' => $review['user_id']]);
+            return new Review(
+                $review['id'],
+                $review['movie_id'],
+                new User(
+                    $user['id'],
+                    $user['email'],
+                    $user['name'],
+                    $user['password'],
+                ),
+                $review['review'],
+                $review['rating'],
+            );
+        }, $this->db->get('reviews', ['movie_id' => $id], ['id' => 'DESC']))
+        ;
     }
 }

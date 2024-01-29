@@ -13,4 +13,5 @@ interface AuthInterface
     public function login () :string;
     public function password () :string;
     public function sessionField () :string;
+    public function userId () :?int;
 }

@@ -92,4 +92,9 @@ class Auth implements AuthInterface
     {
         return $this -> config -> get('auth.session_field', 'user_id');
     }
+
+    public function userId () :?int
+    {
+        return $this -> session -> get($this -> sessionField());
+    }
 }

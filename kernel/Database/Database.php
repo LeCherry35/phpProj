@@ -23,7 +23,7 @@ class Database implements DatabaseInterface
         $binds = implode(', ', array_map(fn($field) => ":$field", $fields));
         
         $sql = "INSERT INTO $table ($colunms) VALUES ($binds)";
-        
+        // dd($sql, $data);
         $stmt = $this -> pdo -> prepare($sql);
         
         try {
@@ -55,7 +55,7 @@ class Database implements DatabaseInterface
         return $result ?: null;
     }
     
-    public function get(string $table, array $conditions = []) :array
+    public function get(string $table, array $conditions = [], array $order = [], int $limit = -1) :array
     {
         $where = '';
 
@@ -65,6 +65,14 @@ class Database implements DatabaseInterface
 
         $sql = "SELECT * FROM $table $where";
 
+        if (count($order) > 0) {
+            $sql .= ' ORDER BY '.implode(', ', array_map(fn ($field, $type) => "$field $type", array_keys($order), array_values($order)));
+        }
+
+        if ($limit > 0) {
+            $sql .= " LIMIT $limit";
+        }
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($conditions);
 

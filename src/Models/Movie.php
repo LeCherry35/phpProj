@@ -11,7 +11,8 @@ class Movie
         private string $categoryId,
         private string $image,
         private string $createdAt,
-        private string $updatedAt
+        private string $updatedAt,
+        private array $reviews = [],
     )
     {}
 
@@ -48,5 +49,10 @@ class Movie
     public function updatedAt () :string
     {
         return $this->updatedAt;
+    }
+    
+    public function reviews () :array
+    {
+        return $this->reviews;
     }
 }
