@@ -21,4 +21,22 @@ class ReviewService {
 
     }
 
+    public function getReviewsByMovieId(int $movieId) :array
+    {
+        return $this->db->get('reviews', ['movie_id' => $movieId]);
+    }
+
+    
+
+    public function updateMovieRating(int $movieId) :void
+    {
+        $reviews = $this->getReviewsByMovieId($movieId);
+
+        //counting average rating
+        $average_rating = array_reduce($reviews, function($carry, $review) {
+            return $carry + $review['rating'];
+        }, 0) / count($reviews);
+
+        $this->db->update('movies', ['rating' => ceil($average_rating)], ['id' => $movieId]);
+    }
 }

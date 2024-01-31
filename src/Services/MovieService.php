@@ -39,6 +39,7 @@ class MovieService
                 $movie['description'],
                 $movie['category_id'],
                 $movie['image'],
+                $movie['rating'],
                 $movie['created_at'],
                 $movie['updated_at'],
             );
@@ -60,7 +61,8 @@ class MovieService
             $movie['name'],
             $movie['description'],
             $movie['category_id'],
-            $movie['image'],
+            $movie['image'],          
+            $movie['rating'],
             $movie['created_at'],
             $movie['updated_at'],
             $reviews,
@@ -98,6 +100,7 @@ class MovieService
                 $movie['description'],
                 $movie['category_id'],
                 $movie['image'],
+                $movie['rating'],
                 $movie['created_at'],
                 $movie['updated_at'],
             );

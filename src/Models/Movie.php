@@ -10,6 +10,7 @@ class Movie
         private string $description,
         private string $categoryId,
         private string $image,
+        private $rating = 0,
         private string $createdAt,
         private string $updatedAt,
         private array $reviews = [],
@@ -54,5 +55,10 @@ class Movie
     public function reviews () :array
     {
         return $this->reviews;
+    }
+
+    public function rating () :?int
+    {
+        return $this->rating;
     }
 }
