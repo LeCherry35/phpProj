@@ -9,6 +9,7 @@ class User
         private string $email,
         private string $login,
         private string $password,
+        private bool $isAdmin
     )
     {}
 
@@ -30,6 +31,11 @@ class User
     public function password() :string
     {
         return $this->password;
+    }
+
+    public function isAdmin() :bool
+    {
+        return $this->isAdmin;
     }
 
 }

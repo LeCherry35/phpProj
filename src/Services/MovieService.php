@@ -119,6 +119,7 @@ class MovieService
                     $user['email'],
                     $user['name'],
                     $user['password'],
+                    $user['is_admin'],
                 ),
                 $review['review'],
                 $review['rating'],

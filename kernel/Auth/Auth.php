@@ -32,14 +32,16 @@ class Auth implements AuthInterface
             $this->redirect->to('login');
         }
 
+        $this -> session -> set('is_admin', $user['is_admin']);
         $this -> session -> set($this->sessionField(), $user['id']);
+        
 
         return true;
     }
 
-    public function user () :?User
+    //getting the user from the database if the session is set
+    public function user () :?User 
     {
-        // return $_SESSION['user'] ?? null;
         if (!$this -> check()) {
             return null;
         }
@@ -51,6 +53,7 @@ class Auth implements AuthInterface
                 $user[$this -> email()],
                 $user[$this -> login()],
                 $user[$this -> password()],
+                (bool) $user['is_admin']
 
             );
         }
@@ -59,8 +62,12 @@ class Auth implements AuthInterface
 
     public function check () :bool
     {
-        // return isset($_SESSION['user']);
         return $this ->session -> has($this -> sessionField());
+    }
+
+    public function checkIfAdmin () :bool
+    {
+        return (bool) $this -> session -> get('is_admin');
     }
 
     public function logout () :void
@@ -97,4 +104,5 @@ class Auth implements AuthInterface
     {
         return $this -> session -> get($this -> sessionField());
     }
+
 }
