@@ -8,6 +8,7 @@ use App\Kernel\Config\Config;
 use App\Kernel\Config\ConfigInterface;
 use App\Kernel\Database\Database;
 use App\Kernel\Database\DatabaseInterface;
+// use App\Kernel\Exceptions\GlobalError;
 use App\Kernel\Http\Redirect;
 use App\Kernel\Http\RedirectInterface;
 use App\Kernel\Http\Request;
@@ -46,6 +47,8 @@ class Container
 
     public readonly StorageInterface $storage;
 
+    // public readonly GlobalError $globalError;
+
     public function __construct()
     {
         $this -> registerServices();
@@ -59,7 +62,7 @@ class Container
         $this -> session = new Session();
         $this -> config = new Config();
         $this-> redirect = new Redirect($this -> config);
-        $this -> database = new Database($this -> config);
+        $this -> database = new Database($this -> config, $this -> session, $this -> redirect);
         $this -> auth = new Auth($this -> database, $this -> session, $this -> config, $this -> redirect);
         $this -> storage = new Storage($this -> config);
         $this -> view = new View($this -> session, $this -> auth, $this -> config, $this -> storage);

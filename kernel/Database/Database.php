@@ -3,6 +3,8 @@
 namespace App\Kernel\Database;
 
 use App\Kernel\Config\ConfigInterface;
+use App\Kernel\Http\RedirectInterface;
+use App\Kernel\Session\SessionInterface;
 
 class Database implements DatabaseInterface
 {
@@ -10,6 +12,8 @@ class Database implements DatabaseInterface
 
     public function __construct(
         private ConfigInterface $config,
+        private SessionInterface $session,
+        private RedirectInterface $redirect
     )
     {
         $this -> connect();
@@ -84,16 +88,19 @@ class Database implements DatabaseInterface
     public function delete(string $table, array $conditions = []) :void
     {
         $where = '';
-
         if (count($conditions) > 0) {
             $where = 'WHERE '.implode(' AND ', array_map(fn ($field) => "$field = :$field", array_keys($conditions)));
         }
-
+        
         $sql = "DELETE FROM $table $where";
-
+        
         $stmt = $this->pdo->prepare($sql);
-
-        $stmt->execute($conditions);
+        try {
+            $stmt->execute($conditions);
+        } catch (\PDOException $e) {
+            $this->session->set('global_error', 'Error deleting record:'.$e->getMessage());
+            $this->redirect->to('admin');
+        }
     }
 
     public function update(string $table, array $data = [], array $conditions = []) :void
