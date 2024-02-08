@@ -14,6 +14,7 @@ class Movie
         private string $createdAt,
         private string $updatedAt,
         private array $reviews = [],
+        private bool $hasUsersReview = false,
     )
     {}
 
@@ -60,5 +61,10 @@ class Movie
     public function rating () :?int
     {
         return $this->rating;
+    }
+
+    public function hasUsersReview () :bool
+    {
+        return $this->hasUsersReview;
     }
 }

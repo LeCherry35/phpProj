@@ -9,9 +9,11 @@ class Review
     public function __construct(
         private int $id,
         private int $movieId,
-        private User $user,
+        private int $userId,
+        private string $userName,
         private string $review,
         private int $rating,
+        private bool $fromCurrentUser = false,
     )
     {}
 
@@ -25,9 +27,14 @@ class Review
         return $this->movieId;
     }
 
-    public function user () :User
+    public function userId () :int
     {
-        return $this->user;
+        return $this->userId;
+    }
+
+    public function userName () :string
+    {
+        return $this->userName;
     }
 
     public function review () :string
@@ -38,5 +45,10 @@ class Review
     public function rating () :int
     {
         return $this->rating;
+    }
+
+    public function fromCurrentUser () :bool
+    {
+        return $this->fromCurrentUser;
     }
 }

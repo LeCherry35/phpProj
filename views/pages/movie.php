@@ -6,7 +6,8 @@
     <p>Description:<?php echo $movie->description() ?></p>
     <p>Added <?php echo $movie->createdAt() ?></p>
     <hr>
-    <?php if($auth -> check()) { ?>
+    <?php if($auth -> check()) { 
+        if(!$movie->hasUsersReview()){?>
         <h4>Your review</h4>
         <form action="review/add" method="post">
             <input type="hidden" name="movieId" value="<?php echo $movie->id() ?>">
@@ -29,7 +30,7 @@
             </ul>
             <button>Submit</button>
         </form>
-    <?php } else {?>
+    <?php }} else {?>
         <a href="login">Login to add a review</a>
     <?php } ?>
     <?php foreach($movie->reviews() as $review) { 

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Kernel\Auth\User;
 use App\Kernel\Database\DatabaseInterface;
 use App\Kernel\Upload\UploadedFileInterface;
 use App\Models\Movie;
@@ -55,7 +54,12 @@ class MovieService
         }
 
         $reviews = $this->getReviews($id);
+        
+        $hasUsersReview = array_reduce($reviews, function ($userHasReview, $review) {
 
+            if($review->fromCurrentUser()) return true;
+            else return $userHasReview;
+        }, false);
         return new Movie(
             $movie['id'],
             $movie['name'],
@@ -66,6 +70,7 @@ class MovieService
             $movie['created_at'],
             $movie['updated_at'],
             $reviews,
+            $hasUsersReview,
         );
     }
 
@@ -114,15 +119,11 @@ class MovieService
             return new Review(
                 $review['id'],
                 $review['movie_id'],
-                new User(
-                    $user['id'],
-                    $user['email'],
-                    $user['name'],
-                    $user['password'],
-                    $user['is_admin'],
-                ),
+                $user['id'],
+                $user['name'],
                 $review['review'],
                 $review['rating'],
+                $user['id'] === $_SESSION['user_id'],
             );
         }, $this->db->get('reviews', ['movie_id' => $id], ['id' => 'DESC']))
         ;
